@@ -15,7 +15,7 @@ void delay_ms(int time_ms){
    //T2CON config
     T2CONbits.T32 = 0;
     T2CONbits.TCS = 0;
-    T2CONbits.TCKPS = 2; //prescaler set to 10 which is 1:64
+    T2CONbits.TCKPS = 3; //prescaler set to 11 which is 1:256
     //T2CONbits.TGATE = 0;
     T2CONbits.TSIDL = 0;
     
@@ -26,7 +26,7 @@ void delay_ms(int time_ms){
     //fclk = 8Mhz/2 = 4Mhz
     //prescaler = 4*10^6
     
-    PR2 = (time_ms *4000000)/(1000*64); //pr2 = time_ms * 8Mhz/2 /1000 (for delay in ms)
+    PR2 = (time_ms *8000000)/(2*1000*256); //pr2 = time_ms * 8Mhz/2 /1000 (for delay in ms)
     //PR2 = (time_ms *32000)/2000; //pr2 = time_ms * 8Mhz/2 /1000 (for delay in ms)
     TMR2 = 0;
     T2CONbits.TON = 1;
