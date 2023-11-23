@@ -45,9 +45,7 @@ while(AD1CON1bits.DONE==0)
 
 #include "xc.h"
 
-int main(void) {
-    return 0;
-}
+
 
 //ADC interrupt
 // ?? Do we need this ??
