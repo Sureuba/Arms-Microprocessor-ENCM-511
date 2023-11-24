@@ -34,7 +34,7 @@ uint16_t ADCvalue ;               // 16 bit register used to hold ADC converted 
 /* ------------- ADC SAMPLING AND CONVERSION  ------------------*/
 AD1CON1bits.ASAM = 0;              // Initiate ADC sampling
 AD1CON1bits.SAMP= 1;               //Start Sampling, Conversion starts automatically after SSRC and SAMC settings 
-ADCON1bits.ADON = 1;               //ADC is operating (or here??)
+AD1CON1bits.ADON = 1;               //ADC is operating (or here??)
 while(AD1CON1bits.DONE==0)
    {}                              //?? ask if anything needs to be put into the while loop. ??
    ADCvalue = ADC1BUF0;            // ADC output is stored in ADC1BUF0 as this point 
