@@ -4,13 +4,18 @@
  *
  * Created on November 16, 2023, 1:49 PM
  */
-uint16_t ADCINIT(void){
-        /* ------------- ADC INITIALIZATION  ------------------*/ 
+#include "xc.h"
+#include "header.h"
+
+uint16_t do_ADC(void) {
+   
+uint16_t ADCvalue ;              // 16 bit register used to hold ADC converted digital output ADC1BUF0                                 
+
+   /* ------------- ADC INITIALIZATION  ------------------*/ 
 
     // Configure ADC by setting bits in AD1CON1 register ?..
     AD1CON1bits.FORM = 00;            // output format in integer
     AD1CON1bits.SSRC = 111;           //internal counter ends sampling
-
 
     AD1CON2bits.VCFG = 0b000;         // Selects AVDD, AVSS (supply voltage to PIC) as Vref ?..
                                       // Configure ADC by setting bits in AD1CON2
@@ -19,17 +24,14 @@ uint16_t ADCINIT(void){
                                       // Ensure sample time is 1/10th of signal being sampled
     AD1CON3bits.SAMC = 11111;         //Tad = 31 (WRONG TBD later!) (should be 1/10th signal being sampled)
 
-
     //ADC input selection::
     AD1CHSbits.CH0NB = 0;             // ?? negative input is Vr- (TDB) ??
     AD1CHSbits.CH0SB = 0101;          // ?? Positive input is AN5 ??
                                       //Question the purpose of MUX B and negative/positive input
-    //
-
-}
-
-uint16_t do_ADC(void) {
-uint16_t ADCvalue ;               // 16 bit register used to hold ADC converted digital output ADC1BUF0                                 
+    AD1PCFGbits.PCFG5 = 0;            //change from analog to digital
+    
+    
+    /*-------------------------------------------------------*/
 // Select and configure ADC input
 /* ------------- ADC SAMPLING AND CONVERSION  ------------------*/
 AD1CON1bits.ASAM = 0;              // Initiate ADC sampling
@@ -44,8 +46,6 @@ while(AD1CON1bits.DONE==0)
 }
 
 #include "xc.h"
-
-
 
 //ADC interrupt
 // ?? Do we need this ??
