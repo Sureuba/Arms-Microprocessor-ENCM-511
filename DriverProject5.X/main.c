@@ -35,6 +35,7 @@
 #include <xc.h>
 #include "clkChange.h"
 #include "uart.h"
+#include "header.h"
 
 #define BUF_SIZE 10
 extern uint8_t RXFlag;
@@ -43,7 +44,7 @@ char receive_buffer[BUF_SIZE];
 
 int main(void) {
     
-    newClk(500);
+    newClk(500); //500 KHZ clock frequency
     
     InitUART2();
     
@@ -51,6 +52,11 @@ int main(void) {
     
 //    Disp2String("test\n\r");
     while(1) {
+        
+
+        
+        /*
+        displayGraph();
         
         Disp2String("Enter a single char, then hit ENTER: ");
         RecvUartChar();
@@ -72,7 +78,7 @@ int main(void) {
         XmitUART2('[',1);
         XmitUART2('2',1);
         XmitUART2('J',1);
-       
+       */
         
         
     /* An optional test you can run below to simply check the shared RXFlag*/
