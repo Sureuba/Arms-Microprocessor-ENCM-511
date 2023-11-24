@@ -1,6 +1,6 @@
 /*
  * File:   uart.c
- * Author: psbta
+ * Author: Uruba, Mufaro, Fardin
  *
  * Created on October 10, 2023, 4:10 PM
  */
@@ -14,11 +14,14 @@ uint8_t received_char = 0;
 uint8_t RXFlag = 0;
 // extern uint16_t CNflag; // uncomment if CNflag is implemented to break out of the busy wait for new input
 
-void InitUART2(void) 
+void InitUART2(void) //initializes UART
 {
 	// configures UART2 module on pins RB0 (Tx) and RB1 (Rx) on PIC24F16KA101 
-	// Enables UART2 
-    
+	TRISBbits.TRISB0=0;
+	TRISBbits.TRISB1=1;
+	LATBbits.LATB0=1;
+    // Enables UART2 
+   
     // TARGET: 4800 baud @ 500 kHz  FOSC
     
 	U2MODEbits.USIDL = 0;	// Bit13 Continue in Idle
@@ -72,8 +75,9 @@ void InitUART2(void)
     IEC1bits.U2RXIE = 1;	// Enable Recieve Interrupts
 
 	U2MODEbits.UARTEN = 1;	// And turn the peripheral on
+	U2STAbits.UTXEN = 1;
     
-//	U2STAbits.UTXEN = 1;
+    return;
 }
 
 
@@ -90,7 +94,7 @@ void Disp2String(char *str) //Displays String of characters
 
 void XmitUART2(char CharNum, unsigned int repeatNo)
 {	
-	
+	InitUART2(); //Initialize UART2 and turn on
 	U2STAbits.UTXEN = 1;
 	while(repeatNo!=0) 
 	{
@@ -106,6 +110,8 @@ void XmitUART2(char CharNum, unsigned int repeatNo)
 	}
 
     U2STAbits.UTXEN = 0;
+    
+    return;
 }
 
 /************************************************************************
@@ -201,5 +207,4 @@ void __attribute__ ((interrupt, no_auto_psv)) _U2RXInterrupt(void) {
 
 void __attribute__ ((interrupt, no_auto_psv)) _U2TXInterrupt(void) {
 	IFS1bits.U2TXIF = 0;
-
 }
