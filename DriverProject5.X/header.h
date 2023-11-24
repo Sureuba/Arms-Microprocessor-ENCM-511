@@ -37,6 +37,11 @@
 
     void delay_ms(uint32_t time_ms);
     void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(void);
+//ADCconfig headers
+ 
+   uint16_t do_ADC(void);
+   //adc interrupt is optional
+   void __attribute__((interrupt, no_auto_psv)) _ADC1Interrupt(void);
 
 
 #ifdef	__cplusplus
