@@ -14,21 +14,21 @@ uint16_t ADCvalue ;              // 16 bit register used to hold ADC converted d
    /* ------------- ADC INITIALIZATION  ------------------*/ 
 
     // Configure ADC by setting bits in AD1CON1 register ?..
-    AD1CON1bits.FORM = 00;            // output format in integer
-    AD1CON1bits.SSRC = 111;           //internal counter ends sampling
+    AD1CON1bits.FORM = 0b00;            // output format in integer
+    AD1CON1bits.SSRC = 0b111;           //internal counter ends sampling
 
     AD1CON2bits.VCFG = 0b000;         // Selects AVDD, AVSS (supply voltage to PIC) as Vref ?..
                                       // Configure ADC by setting bits in AD1CON2
-    AD1CON3bits.ADRC = 0;             // Use system clock ?..
+    AD1CON3bits.ADRC = 0b0;             // Use system clock ?..
                                       //Configure the ADC?s sample time by setting bits in AD1CON3 ?..                                  
                                       // Ensure sample time is 1/10th of signal being sampled
-    AD1CON3bits.SAMC = 11111;         //Tad = 31 (WRONG TBD later!) (should be 1/10th signal being sampled)
+    AD1CON3bits.SAMC = 0b11111;         //Tad = 31 (WRONG TBD later!) (should be 1/10th signal being sampled)
 
     //ADC input selection::
-    AD1CHSbits.CH0NB = 0;             // ?? negative input is Vr- (TDB) ??
-    AD1CHSbits.CH0SB = 0101;          // ?? Positive input is AN5 ??
+    AD1CHSbits.CH0NB = 0b0;             // negative input is Vr-
+    AD1CHSbits.CH0SB = 0b0101;          // Positive input is AN5 
                                       //Question the purpose of MUX B and negative/positive input
-    AD1PCFGbits.PCFG5 = 0;            //change from analog to digital
+    AD1PCFGbits.PCFG5 = 0b0;            //change from analog to digital
     
     
     /*-------------------------------------------------------*/

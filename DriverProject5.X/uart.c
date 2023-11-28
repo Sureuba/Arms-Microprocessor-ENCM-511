@@ -21,7 +21,8 @@ void InitUART2(void) //initializes UART
 	TRISBbits.TRISB1=1;
 	LATBbits.LATB0=1;
     // Enables UART2 
-   
+    
+
     // TARGET: 4800 baud @ 500 kHz  FOSC
     
 	U2MODEbits.USIDL = 0;	// Bit13 Continue in Idle
@@ -90,6 +91,10 @@ void Disp2String(char *str) //Displays String of characters
     }
 
     return;
+}
+
+void Disp2String(uint16_t x){
+    XmitUART2(str[i],1);
 }
 
 void XmitUART2(char CharNum, unsigned int repeatNo)
@@ -208,3 +213,4 @@ void __attribute__ ((interrupt, no_auto_psv)) _U2RXInterrupt(void) {
 void __attribute__ ((interrupt, no_auto_psv)) _U2TXInterrupt(void) {
 	IFS1bits.U2TXIF = 0;
 }
+

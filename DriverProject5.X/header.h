@@ -40,9 +40,9 @@
 //ADCconfig headers
  
    uint16_t do_ADC(void);
-   //adc interrupt is optional
-   void __attribute__((interrupt, no_auto_psv)) _ADC1Interrupt(void);
-
+   void __attribute__((interrupt, no_auto_psv)) _ADC1Interrupt(void);//adc interrupt is optional
+//BarGraph header
+   
 
 #ifdef	__cplusplus
 extern "C" {

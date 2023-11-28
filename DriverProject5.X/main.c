@@ -45,17 +45,11 @@ char receive_buffer[BUF_SIZE];
 int main(void) {
     
     newClk(500); //500 KHZ clock frequency
-    
-    InitUART2();
+    InitUART2(); //initialize UART
     
     AD1PCFG = 0xFFFF; // Make sure the UART RX bit is set to digital!
-    
 //    Disp2String("test\n\r");
     while(1) {
-        
-
-        
-        /*
         displayGraph();
         
         Disp2String("Enter a single char, then hit ENTER: ");
@@ -78,7 +72,7 @@ int main(void) {
         XmitUART2('[',1);
         XmitUART2('2',1);
         XmitUART2('J',1);
-       */
+       
         
         
     /* An optional test you can run below to simply check the shared RXFlag*/
