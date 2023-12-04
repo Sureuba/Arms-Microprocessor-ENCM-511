@@ -8,6 +8,7 @@
 #include "uart.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
 
@@ -81,9 +82,8 @@ void errorState(){
     Disp2String("\r\nError: Please press PB2 to restart program\r\n");
     LATBbits.LATB8 = 0;
     Idle();
-    delay_ms(500);
     inputs();
-    if (CN1Flag == 1) {// enable flashing only if push button1 is pushed 
+    if (CN1Flag == 1 ) {// enable flashing only if push button1 is pushed 
         //back to initState())
         CN1Flag = 0;
         initState();
@@ -208,9 +208,11 @@ void Unlock(){
     inputs();
     delay_ms(500);
     Disp2String("\r\nFLag Values\r\n");
+    //DELETE THESE LATER
     Disp2Dec(CN0Flag);
     Disp2Dec(CN1Flag);
     Disp2Dec(CN30Flag);
+    //**********************
     if(CN0Flag == 1){
         CN0Flag = 0;
         initState();
@@ -230,9 +232,8 @@ void Unlock(){
 }
 
 void newPassState(){
-    
     while(1){
-        char * newPass[4];
+        char * newPass;
         Disp2String("\r\n Please enter first character of new password : \r\n");
         newPass[0] = RecvUartChar();
         Disp2String("\r\n Please enter second character of new password : \r\n");
@@ -258,27 +259,106 @@ void newPassState(){
                 Disp2String("\r\n Please enter a valid input \r\n");
                 continue;
             }
-                
         }
-        
-        //TODO
+        newPass += '\0';
+        if(strlen(newPass) != strlen(password)){
+            Disp2String("Something with the copying went wrong, sorry!");
+            continue;
+        }
         Disp2String("\r\n newPass: \r\n");
         Disp2String(newPass);
         Disp2String("\r\n Old Password: \r\n");
         Disp2String(password);
-        strcpy(password,newPass);
+        strcpy(password, newPass);
+        if(strlen(newPass) != strlen(password)){
+            Disp2String("\r\nSomething with the copying went wrong, sorry!\r\n");
+            continue;
+        }
         Disp2String("\r\n new Password: \r\n");
         Disp2String(password);
-        break;
+        Disp2String("\r\n Password successfully changed! \r\n");
+        initState();
 
     //enter 3 char and a number
     //timeout after 5 seconds
     }
-    
 }
 
-void specialState(){
-    //do someting 
+void specialState(){ //game!
+    
+    while(1){ //forever in a loop until user presses PB2 or PB3
+        Disp2String("\r\n You have arrived at the game!\r\n");
+        Disp2String("\r\n Rules:  \r\n");
+        Disp2String("\r\n Follow the sequence of buttons to be pressed on the screen ");
+        Disp2String("\r\n press the correct buttons to pass the levels and win\r\n");
+        Disp2String("\r\nPress PB3 to start the game!\r\n");
+        Disp2String("\r\nPress PB1 to go back to main unlocked state\r\n");
+        Idle();
+        inputs();
+        delay_ms(500);
+        
+        if(CN30Flag == 1){ //PB3 pressed start game 
+            CN30Flag = 0;
+            newClk(8);//change clock to 8MHz to write quicker for the game
+        }
+        else if(CN0Flag == 1){ //PB1 pressed go back to unlock state
+            CN0Flag = 0;
+            Unlock();
+        }
+
+        /*start game after PB3 pressed****************************/
+        int levels = 5;
+        int sequence[levels];
+        bool win;
+        Disp2String("\r\nFollow the sequence:\r\n");
+        
+        //generate a random sequence of buttons (PB2 or PB3)
+        for(int i = 0; i < levels; ++i){
+            sequence[i] = rand() % 2 == 0 ? 2 : 3;
+            char * pressMe = sequence[i] == 2 ? "PB2 " : "PB3 ";//either PB2 or PB3 saved bc sequence has 2 or 3
+            Disp2String(pressMe);
+            delay_ms(1000);
+        }   
+        
+        //user presses buttons based on sequence one by one
+        Disp2String("\r\nYour turn! Press the buttons in order.\r\n");
+
+        for(int i = 0; i < 5; ++i){
+            Idle();
+            inputs();
+            delay_ms(500);
+            if(sequence[i]==2){ //if PB2 in sequence
+                if(CN1Flag == 1){
+                    CN1Flag = 0;
+                    Disp2String("Correct! ");
+                }else{
+                    Disp2String("\r\nWrong sequence! You lost the game.\r\n");
+                    newClk(500); //go back to old clock frequency since game is over
+                    win = false;
+                    break;
+                }
+            }
+            else if(sequence[i]== 3){ //if PB3 in sequence
+                if(CN30Flag == 1){
+                    CN30Flag = 0;
+                    Disp2String("Correct! ");
+                }else{
+                    Disp2String("Wrong! ");
+                    Disp2String("\r\nWrong sequence! You lost the game.\r\n");
+                    newClk(500); //go back to old clock frequency since game is over
+                    win = false;
+                    break;
+                }
+            }
+            win = true;
+        }
+        if(win){
+            Disp2String("\r\nCongratulations! You won the game!\r\n");
+        }
+        newClk(500); //go back to old clock frequency since game is over
+
+    }
+        
 }
 
 //CN Inturrupt for WHEN buttons ARE PUSHED 
@@ -294,6 +374,7 @@ void __attribute__((interrupt, no_auto_psv))_CNInterrupt(void){
         else if(push1 == 1 && push2 == 1 && push3 == 0){
             CN30Flag ^= 1;
         }
+        
     IFS1bits.CNIF = 0; //clear inturrupt flags
 }
     
