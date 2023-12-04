@@ -65,9 +65,14 @@
 
 void InitUART2(void);
 void Disp2String(char *str);
+void Disp2Hex(unsigned int DispData);
+void Disp2Dec(uint16_t Dec_num);
 void XmitUART2(char CharNum, unsigned int repeatNo);
 void RecvUart(char* input, uint8_t buf_size);
 char RecvUartChar(void);
+char NonBlockingRecvUartChar();
+void DisplayBarGraph(uint16_t value);
+void RecvUartString(char* input, uint8_t buf_size);
 
 #ifdef	__cplusplus
 extern "C" {

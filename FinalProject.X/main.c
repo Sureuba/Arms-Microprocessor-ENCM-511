@@ -44,21 +44,17 @@ extern uint8_t RXFlag;
 
 char receive_buffer[BUF_SIZE];
 
-char* password = "Dog";
-
 int main(void) {
     
     newClk(500);
-    
+    IOinit();
     InitUART2();
     
     AD1PCFG = 0xFFFF; // Make sure the UART RX bit is set to digital!
     
-//    Disp2String("test\n\r");
     while(1) {
         
-    IOcheck();
-        //reuable code
+    initState();
 //        Disp2String("WELCOME! Enter a single char, then hit ENTER: ");
 //        RecvUartChar();
 //        
@@ -67,17 +63,6 @@ int main(void) {
 //        Disp2String("\r\nYou said: ");
 //        Disp2String(receive_buffer);
 //        Disp2String("\r\n");
-        
-        //if in unlocked state
-            //if want password change:
-                //Disp2string("please enter new password")
-                //RecUartChar();
-                //strcpy(pass, nuWord);
-        //---------------------------------------------------
-        
-//        
-//        int i = 0;
-//        while (i < 30000) {i++;}
         
 //        /* This ANSI escape sequence takes us home */
 //        XmitUART2(0x1b,1);

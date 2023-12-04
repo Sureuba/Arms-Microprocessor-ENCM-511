@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=clkChange.c main.c uart.c timers.c IO.c
+SOURCEFILES_QUOTED_IF_SPACED=clkChange.c main.c uart.c timers.c IO.c ADCconfig.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/clkChange.o ${OBJECTDIR}/main.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/timers.o ${OBJECTDIR}/IO.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/clkChange.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/uart.o.d ${OBJECTDIR}/timers.o.d ${OBJECTDIR}/IO.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/clkChange.o ${OBJECTDIR}/main.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/timers.o ${OBJECTDIR}/IO.o ${OBJECTDIR}/ADCconfig.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/clkChange.o.d ${OBJECTDIR}/main.o.d ${OBJECTDIR}/uart.o.d ${OBJECTDIR}/timers.o.d ${OBJECTDIR}/IO.o.d ${OBJECTDIR}/ADCconfig.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/clkChange.o ${OBJECTDIR}/main.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/timers.o ${OBJECTDIR}/IO.o
+OBJECTFILES=${OBJECTDIR}/clkChange.o ${OBJECTDIR}/main.o ${OBJECTDIR}/uart.o ${OBJECTDIR}/timers.o ${OBJECTDIR}/IO.o ${OBJECTDIR}/ADCconfig.o
 
 # Source Files
-SOURCEFILES=clkChange.c main.c uart.c timers.c IO.c
+SOURCEFILES=clkChange.c main.c uart.c timers.c IO.c ADCconfig.c
 
 
 
@@ -119,6 +119,12 @@ ${OBJECTDIR}/IO.o: IO.c  .generated_files/flags/default/62848c2d485e6494324be6d5
 	@${RM} ${OBJECTDIR}/IO.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  IO.c  -o ${OBJECTDIR}/IO.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/IO.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/ADCconfig.o: ADCconfig.c  .generated_files/flags/default/955bf43d0e57d0ad2910b305e966ade47d698936 .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ADCconfig.o.d 
+	@${RM} ${OBJECTDIR}/ADCconfig.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ADCconfig.c  -o ${OBJECTDIR}/ADCconfig.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ADCconfig.o.d"      -g -D__DEBUG     -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
 ${OBJECTDIR}/clkChange.o: clkChange.c  .generated_files/flags/default/38478731d65a86407d74a8aadf3cdf00fc5ff92a .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
 	@${MKDIR} "${OBJECTDIR}" 
@@ -149,6 +155,12 @@ ${OBJECTDIR}/IO.o: IO.c  .generated_files/flags/default/c20d6d325de71f4bfd3ab1bf
 	@${RM} ${OBJECTDIR}/IO.o.d 
 	@${RM} ${OBJECTDIR}/IO.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  IO.c  -o ${OBJECTDIR}/IO.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/IO.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/ADCconfig.o: ADCconfig.c  .generated_files/flags/default/e7a5fa0da450d60868d8e85167f7f5d11f624fff .generated_files/flags/default/da39a3ee5e6b4b0d3255bfef95601890afd80709
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/ADCconfig.o.d 
+	@${RM} ${OBJECTDIR}/ADCconfig.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  ADCconfig.c  -o ${OBJECTDIR}/ADCconfig.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/ADCconfig.o.d"        -g -omf=elf -DXPRJ_default=$(CND_CONF)    $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

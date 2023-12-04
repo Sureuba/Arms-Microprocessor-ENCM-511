@@ -9,10 +9,11 @@
 #include "xc.h"
 #include "uart.h"
 #include "string.h"
+#include "math.h"
 
 uint8_t received_char = 0;
 uint8_t RXFlag = 0;
-// extern uint16_t CNflag; // uncomment if CNflag is implemented to break out of the busy wait for new input
+extern uint16_t CNflag; // uncomment if CNflag is implemented to break out of the busy wait for new input
 
 void InitUART2(void) 
 {
@@ -24,7 +25,7 @@ void InitUART2(void)
 	U2MODEbits.USIDL = 0;	// Bit13 Continue in Idle
 	U2MODEbits.IREN = 0;	// Bit12 No IR translation
 	U2MODEbits.RTSMD = 0;	// Bit11 Flow Control Mode Mode
-	U2MODEbits.UEN = 00;		// Bits8,9 TX,RX enabled, CTS,RTS not
+	U2MODEbits.UEN = 00;	// Bits8,9 TX,RX enabled, CTS,RTS not
 	U2MODEbits.WAKE = 0;	// Bit7 No Wake up (since we don't sleep here)
 	U2MODEbits.LPBACK = 0;	// Bit6 No Loop Back
 	U2MODEbits.ABAUD = 0;	// Bit5 No Autobaud (would require sending '55')
@@ -159,6 +160,7 @@ void RecvUart(char* input, uint8_t buf_size)
  * Note: there is commented-out skeleton code that could be (re)implemented to allow the function
  * return early without the ENTER key given an interrupt-set global flag. 
  ************************************************************************/
+
 char RecvUartChar()
 {	
     char last_char;
@@ -188,6 +190,86 @@ char RecvUartChar()
         //     add logic here
         // }
     }
+}
+
+
+void DisplayBarGraph(uint16_t value) {
+    uint8_t barLength = value / 10; // Adjust this divisor based on your specific range and display preferences
+
+    // Display the bar graph
+    XmitUART2('[', 1); // Bar graph start character
+
+    for (uint8_t i = 0; i < barLength; i++) {
+        XmitUART2('|', 1); // Bar segment character
+    }
+
+    XmitUART2(']', 1); // Bar graph end character
+    XmitUART2('\n', 1); // New line for better visualization
+}
+
+void Disp2Dec(uint16_t Dec_num)
+{
+    uint8_t rem; //remainder in div by 10
+    uint16_t quot;
+    uint8_t ctr = 0; //counter
+    XmitUART2(' ',1); // Disp Gap
+    while(ctr<5)
+    {
+        quot = Dec_num/(pow(10,(4-ctr)));
+        rem = quot%10;
+        XmitUART2(rem + 0x30 , 1);
+        ctr = ctr + 1;
+    }
+    XmitUART2(' ',1); // Disp Gap
+    return;
+}
+
+void Disp2Hex(unsigned int DispData)
+{
+    char i;
+    char nib = 0x00;
+    XmitUART2(' ',1); // Disp Gap
+    XmitUART2('0',1); // Disp Hex notation 0x
+    XmitUART2('x',1);
+    for (i=3; i>=0; i--)
+    {
+        nib = ((DispData >> (4*i)) & 0x000F);
+        if (nib >= 0x0A)
+        {
+            nib = nib +0x37; //For Hex values A-F
+        }
+        else
+        {
+            nib = nib+0x30; //For hex values 0-9
+        }
+        XmitUART2(nib,1);
+    }
+    XmitUART2(' ',1);
+    DispData = 0x0000; // Clear DispData
+    return;
+}
+
+char NonBlockingRecvUartChar() {
+    char last_char = '\0';  // Initialize last_char to a default value
+    XmitUART2(' ', 1);
+
+    if (RXFlag == 1) {
+        if (received_char == 0x0D) {
+            RXFlag = 0;
+            return last_char;
+        }
+
+        if (received_char >= 32 && received_char <= 126) {
+            XmitUART2(0x08, 1);       // send backspace
+            last_char = received_char;
+            XmitUART2(received_char, 1);  // loop back display
+        }
+
+        U2STAbits.OERR = 0;
+        RXFlag = 0;
+    }
+
+    return last_char;  // Return a default value if conditions are not met
 }
 
 void __attribute__ ((interrupt, no_auto_psv)) _U2RXInterrupt(void) {

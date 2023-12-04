@@ -42,6 +42,7 @@
 //ADCconfig headers
  
    uint16_t do_ADC(void);
+   uint16_t Disp2ADC (uint16_t ADCvalue);
    //adc interrupt is optional
    void __attribute__((interrupt, no_auto_psv)) _ADC1Interrupt(void);
    
@@ -55,6 +56,22 @@
    void IOcheck();
    
    void Error();
+   
+   void errorState();
+   
+   void initState();
+   
+   void state1();
+   
+   void state2();
+   
+   void state3();
+   
+   void Unlock();
+   
+   void newPassState();
+   
+   void specialState();
 
 #ifdef	__cplusplus
 extern "C" {
