@@ -1,2 +1,1 @@
-# ENCM-511
-ENCM projects
+# Arms Microprocessor ENCM-511
